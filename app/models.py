@@ -1,5 +1,6 @@
 from app import db
 from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 
 """
 The [table] schema for [User].
@@ -16,6 +17,12 @@ class User(db.Model):
 
     def __repr__(self):
         return('<User {}>'.format(self.username))
+
+    def set_pwd(self, password):
+        self.password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
+
+    def check_pwd(self, password):
+        return(check_password_hash(self.password_hash, password)) 
 
 """
 The [table] schema for [Post]
