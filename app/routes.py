@@ -1,5 +1,6 @@
 from app import app, db
 from app.models import User
+from datetime import datetime
 from app.forms import LoginForm, RegistrationForm
 from flask_login import current_user, login_user, logout_user, login_required
 from flask import render_template, flash, redirect, url_for, request
@@ -11,6 +12,12 @@ from werkzeug.urls import url_parse
 @login_required
 def index():
     return(render_template('index.html',  title = "Welcome"))
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
 
 
 @app.route('/login', methods = ['POST', 'GET'])
