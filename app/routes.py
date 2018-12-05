@@ -1,17 +1,34 @@
 from app import app, db
-from app.models import User
+from app.models import User, Post
 from datetime import datetime
-from app.forms import LoginForm, RegistrationForm, EditProfileForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm
 from flask_login import current_user, login_user, logout_user, login_required
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods = ['POST', 'GET'])
+@app.route('/index', methods = ['POST', 'GET'])
 @login_required
 def index():
-    return(render_template('index.html',  title = "Welcome"))
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title = form.title.data, body = form.body.data, author = current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Posted!', category='message')
+        return(redirect(url_for('index')))
+        posts = [
+        {
+            'author': {'username': 'John'},
+            'body': 'Beautiful day in Portland!'
+        },
+        {
+            'author': {'username': 'Susan'},
+            'body': 'The Avengers movie was so cool!'
+            }
+        ]
+    return(render_template('index.html',  title = "Welcome", form = form, posts = posts))
 
 @app.before_request
 def before_request():
@@ -70,7 +87,7 @@ def user(username):
 @app.route('/edit_profile', methods = ['POST', 'GET'])
 @login_required
 def edit_profile():
-    form = EditProfileForm()
+    form = EditProfileForm(current_user.username)
     if form.validate_on_submit():
         current_user.username = form.username.data
         current_user.about_me = form.about_me.data
