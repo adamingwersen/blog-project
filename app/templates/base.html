@@ -3,32 +3,37 @@
 <html>
     <head>
         {% if title %}
-        <title>{{ title }} - microblog</title>
+        <title>{{ title }} - blog</title>
         {% else %}
-        <title>microblog</title>
+        <title><b><sup>ab</sup>log</b></title>
         {% endif %}
     </head>
     <body>
-        <div>
-            Microblog:
-            <a href="{{ url_for('index') }}">Home</a>
-            {% if current_user.is_anonymous %}
-            <a href="{{ url_for('login') }}">Login</a>
-            {% else %}
-            <a href="{{ url_for('user', username = current_user.username) }}">{{ current_user.username }}</a>
-            <a href="{{ url_for('logout') }}">Log out</a>
-            {% endif %}
-        </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-        {% if messages %}
-        <ul>
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
+      <ul>
+        <li><b><sup>ab</sup>log</b>::</li>
+        <li><a href="{{ url_for('index') }}">home</a></li>
+        {% if current_user.is_anonymous %}
+        <li>
+          <a href="{{ url_for('login') }}">login</a>
+        </li>
+        {% else %}
+        <li>
+          <a href="{{ url_for('user', username = current_user.username) }}">{{ current_user.username }}</a>
+        </li>
+        <li>
+          <a href="{{ url_for('logout') }}">logout</a>
+          {% endif %}
+        </li>
+      </ul>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      <ul>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
     </body>
 </html>

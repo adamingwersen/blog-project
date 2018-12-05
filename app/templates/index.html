@@ -1,19 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Welcome, {{ current_user.username }}!</h1>
+    <h4>welcome back, {{ current_user.username }}</h4>
     <form action = "" method = "post">
       {{ form.hidden_tag() }}
-      <p>
-        Title<br>
-        {{ form.title(cols = 32, rows = 1) }}<br><br><br>
-        Body<br>
-        {{ form.body(cols = 32, rows = 4)}}<br>
-        {% for error in form.body.errors %}
-        <span style="color: red;">[{{ error }}]</span>
-        {% endfor %}
-      </p>
-      <p>{{ form.submit() }}</p>
+      <fieldset>
+        <legend>new <b><sup>ab</sup>log</b> post</legend>
+          <label for="textarea">title</label>
+          <div>{{ form.title(size = 50, cols = 48, rows = 1.5, placeholder = "your title here...", class="textarea", id = "titlefield") }}</div>
+          <label for="textarea">body</label>
+          <div>{{ form.body(size = 512, cols = 48, rows = 15, placeholder = "your blog post here...", class="textarea", id = "bodyfield") }}</div>
+          <div>{{ form.submit(class="button", type = "button") }}</div>
+      </fieldset>
     </form>
     {% for post in posts %}
         {% include '_post.html' %}
