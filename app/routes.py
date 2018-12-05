@@ -12,11 +12,11 @@ def index():
     posts = [
     {
         'author': {'username': 'John'},
-        'body': 'Beautiful day in Portland!'
+        'body': 'Something'
     },
     {
         'author': {'username': 'Susan'},
-        'body': 'The Avengers movie was so cool!'
+        'body': 'Something else'
     }]
     return(render_template('index.html',  user = user, posts = posts))
 
@@ -27,7 +27,7 @@ def login():
         return(redirect(url_for('index')))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username = from.username.data).first()
+        user = User.query.filter_by(username = form.username.data).first()
         if user in None or not user.check_pwd(form.password.data):
             flash('Invalid username or password')
             return(redirect(url_for('login')))
