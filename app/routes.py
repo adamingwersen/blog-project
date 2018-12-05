@@ -18,16 +18,7 @@ def index():
         db.session.commit()
         flash('Posted!', category='message')
         return(redirect(url_for('index')))
-        posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-            }
-        ]
+    posts = Post.query.order_by(Post.timestamp.desc()).all()
     return(render_template('index.html',  title = "Welcome", form = form, posts = posts))
 
 @app.before_request
@@ -78,10 +69,7 @@ def register():
 @login_required
 def user(username):
     user  = User.query.filter_by(username = username).first_or_404()
-    posts = [
-        {'author': user, 'body': 'My first post'},
-        {'author': user, 'body': 'My second post'}
-    ]
+    posts = Post.query.filter_by(user_id = user.id).all()
     return(render_template('user.html', user = user, posts = posts))
 
 @app.route('/edit_profile', methods = ['POST', 'GET'])

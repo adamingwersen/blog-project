@@ -5,9 +5,11 @@
     <form action = "" method = "post">
       {{ form.hidden_tag() }}
       <p>
-        {{ form.post.label }}<br>
-        {{ form.post(cols = 32, rows = 4)}}<br>
-        {% for error in form.post.errors %}
+        Title<br>
+        {{ form.title(cols = 32, rows = 1) }}<br><br><br>
+        Body<br>        
+        {{ form.body(cols = 32, rows = 4)}}<br>
+        {% for error in form.body.errors %}
         <span style="color: red;">[{{ error }}]</span>
         {% endfor %}
       </p>
