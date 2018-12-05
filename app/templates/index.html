@@ -7,7 +7,7 @@
       <p>
         Title<br>
         {{ form.title(cols = 32, rows = 1) }}<br><br><br>
-        Body<br>        
+        Body<br>
         {{ form.body(cols = 32, rows = 4)}}<br>
         {% for error in form.body.errors %}
         <span style="color: red;">[{{ error }}]</span>
@@ -16,8 +16,6 @@
       <p>{{ form.submit() }}</p>
     </form>
     {% for post in posts %}
-    <p>
-    {{ post.author.username }} says: <b>{{ post.body }}</b>
-    </p>
-  {% endfor %}
+        {% include "_post.html" %}
+    {% endfor %}
 {% endblock %}

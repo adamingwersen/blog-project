@@ -18,8 +18,9 @@ def index():
         db.session.commit()
         flash('Posted!', category='message')
         return(redirect(url_for('index')))
-    posts = Post.query.order_by(Post.timestamp.desc()).all()
-    return(render_template('index.html',  title = "Welcome", form = form, posts = posts))
+    page  = request.args.get('page', 1, type = int)
+    posts = Post.query.order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+    return(render_template('index.html',  title = "Welcome", form = form, posts = posts.items))
 
 @app.before_request
 def before_request():
@@ -68,9 +69,10 @@ def register():
 @app.route('/user/<username>')
 @login_required
 def user(username):
+    page  = request.args.get('page', 1, type = int)
     user  = User.query.filter_by(username = username).first_or_404()
-    posts = Post.query.filter_by(user_id = user.id).all()
-    return(render_template('user.html', user = user, posts = posts))
+    posts = Post.query.filter_by(user_id = user.id).order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+    return(render_template('user.html', user = user, posts = posts.items))
 
 @app.route('/edit_profile', methods = ['POST', 'GET'])
 @login_required
