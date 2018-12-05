@@ -1,6 +1,12 @@
 from app import db
+from app import login
 from datetime import datetime
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 """
 The [table] schema for [User].
@@ -8,7 +14,7 @@ TODO:
  * Hashing function implementation for password_hash
  * Describe Post rel.
 """
-class User(db.Model):
+class User(UserMixin, db.Model):
     id            = db.Column(db.Integer, primary_key = True)
     username      = db.Column(db.String(64), index = True, unique = True)
     email         = db.Column(db.String(128), index = True, unique = True)
@@ -22,7 +28,7 @@ class User(db.Model):
         self.password_hash = generate_password_hash(password, method='pbkdf2:sha256', salt_length=8)
 
     def check_pwd(self, password):
-        return(check_password_hash(self.password_hash, password)) 
+        return(check_password_hash(self.password_hash, password))
 
 """
 The [table] schema for [Post]
