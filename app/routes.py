@@ -6,7 +6,30 @@ from flask_login import current_user, login_user, logout_user, login_required
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
 
+"""
+ - SET ACTIVITY -
+ Sets latest activity and commit to db
+"""
+@app.before_request
+@login_required
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
 
+"""
+ - LOGOUT -
+"""
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return(redirect(url_for('index')))
+
+"""
+ - INDEX -
+Routes all transaction from / and /index
+"""
 @app.route('/', methods = ['POST', 'GET'])
 @app.route('/index', methods = ['POST', 'GET'])
 @login_required
@@ -18,17 +41,17 @@ def index():
         db.session.commit()
         flash('Posted!', category='message')
         return(redirect(url_for('index')))
-    page  = request.args.get('page', 1, type = int)
-    posts = Post.query.order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
-    return(render_template('index.html',  title = "Welcome", form = form, posts = posts.items))
+    page        = request.args.get('page', 1, type = int)
+    posts       = Post.query.order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+    next_url    = url_for('index', page = posts.next_num) if posts.has_next else None
+    prev_url    = url_for('index', page = posts.prev_num) if posts.has_prev else None
 
-@app.before_request
-def before_request():
-    if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
-        db.session.commit()
+    return(render_template('index.html',  title = "Welcome", form = form, posts = posts.items, next_url = next_url, prev_url = prev_url))
 
 
+"""
+ - LOGIN -
+"""
 @app.route('/login', methods = ['POST', 'GET'])
 def login():
     if current_user.is_authenticated:
@@ -44,36 +67,26 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
         return(redirect(next_page))
+
     return(render_template('login.html', title = 'Sign In', form = form))
 
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return(redirect(url_for('index')))
-
-@app.route('/register', methods = ['POST', 'GET'])
-def register():
-    if current_user.is_authenticated:
-        return(redirect(url_for('index')))
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        user = User(username = form.username.data, email = form.email.data)
-        user.set_password(form.password.data)
-        db.session.add(user)
-        db.session.commit()
-        flash('Thanks for registering with us.', category='message')
-        return(redirect(url_for('login')))
-    return(render_template('register.html', title = 'Register', form = form))
-
+"""
+ - USER PAGE -
+"""
 @app.route('/user/<username>')
 @login_required
 def user(username):
-    page  = request.args.get('page', 1, type = int)
-    user  = User.query.filter_by(username = username).first_or_404()
-    posts = Post.query.filter_by(user_id = user.id).order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
-    return(render_template('user.html', user = user, posts = posts.items))
+    page        = request.args.get('page', 1, type = int)
+    user        = User.query.filter_by(username = username).first_or_404()
+    posts       = Post.query.filter_by(user_id = user.id).order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+    next_url    = url_for('user', username = username, page = posts.next_num) if posts.has_next else None
+    prev_url    = url_for('user', username = username, page = posts.prev_num) if posts.has_prev else None
+    return(render_template('user.html', user = user, posts = posts.items, next_url = next_url, prev_url = prev_url))
 
+
+"""
+ - EDIT PROFILE
+"""
 @app.route('/edit_profile', methods = ['POST', 'GET'])
 @login_required
 def edit_profile():
@@ -87,4 +100,23 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
+
     return(render_template('edit_profile.html', title = 'Edit Profile', form = form))
+
+"""
+ - REGISTER -
+"""
+@app.route('/register', methods = ['POST', 'GET'])
+def register():
+    if current_user.is_authenticated:
+        return(redirect(url_for('index')))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username = form.username.data, email = form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Thanks for registering with us.', category='message')
+        return(redirect(url_for('login')))
+
+    return(render_template('register.html', title = 'Register', form = form))
