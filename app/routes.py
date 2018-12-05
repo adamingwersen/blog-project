@@ -11,7 +11,6 @@ from werkzeug.urls import url_parse
  Sets latest activity and commit to db
 """
 @app.before_request
-@login_required
 def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
@@ -32,21 +31,22 @@ Routes all transaction from / and /index
 """
 @app.route('/', methods = ['POST', 'GET'])
 @app.route('/index', methods = ['POST', 'GET'])
-@login_required
 def index():
-    form = PostForm()
-    if form.validate_on_submit():
-        post = Post(title = form.title.data, body = form.body.data, author = current_user)
-        db.session.add(post)
-        db.session.commit()
-        flash('Posted!', category='message')
-        return(redirect(url_for('index')))
     page        = request.args.get('page', 1, type = int)
     posts       = Post.query.order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url    = url_for('index', page = posts.next_num) if posts.has_next else None
     prev_url    = url_for('index', page = posts.prev_num) if posts.has_prev else None
-
-    return(render_template('index.html',  title = "Welcome", form = form, posts = posts.items, next_url = next_url, prev_url = prev_url))
+    if current_user.is_authenticated:
+        form = PostForm()
+        if form.validate_on_submit():
+            post = Post(title = form.title.data, body = form.body.data, author = current_user)
+            db.session.add(post)
+            db.session.commit()
+            flash('Posted!', category='message')
+            return(redirect(url_for('index')))
+        return(render_template('index.html',  title = "Home", form = form, posts = posts.items, next_url = next_url, prev_url = prev_url))
+    else:
+        return(render_template('welcome.html',  title = "Welcome", posts = posts.items, next_url = next_url, prev_url = prev_url))
 
 
 """

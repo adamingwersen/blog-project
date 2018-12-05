@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from wtforms.widgets import TextArea
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
 from app.models import User
@@ -28,7 +29,7 @@ class RegistrationForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     username    = StringField('Username', validators = [DataRequired()])
-    about_me    = TextAreaField('About me', validators = [Length(min = 0, max = 50)])
+    about_me    = TextAreaField('About me', validators = [Length(min = 0, max = 50)], widget = TextArea())
     submit      = SubmitField('Submit')
 
     def __init__(self, original_username, *args, **kwargs):
@@ -42,6 +43,6 @@ class EditProfileForm(FlaskForm):
                 raise(ValidationError('Username already taken. Choose another'))
 
 class PostForm(FlaskForm):
-    title   = TextAreaField('Title', validators = [DataRequired(), Length(min = 0, max = 40)])
-    body    = TextAreaField('Body', validators = [DataRequired(), Length(min = 0, max = 512)])
-    submit  = SubmitField('Post!')
+    title   = TextAreaField('Title', validators = [DataRequired(), Length(min = 0, max = 40)], widget = TextArea())
+    body    = TextAreaField('Body', validators = [DataRequired(), Length(min = 0, max = 512)], widget = TextArea())
+    submit  = SubmitField('Post')
