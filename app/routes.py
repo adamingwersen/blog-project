@@ -10,16 +10,6 @@ from werkzeug.urls import url_parse
 @app.route('/index')
 @login_required
 def index():
-    user = {'username': 'Adam'}
-    posts = [
-    {
-        'author': {'username': 'John'},
-        'body': 'Something'
-    },
-    {
-        'author': {'username': 'Susan'},
-        'body': 'Something else'
-    }]
     return(render_template('index.html',  user = user, posts = posts))
 
 
