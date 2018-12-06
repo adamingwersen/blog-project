@@ -11,12 +11,12 @@
       </td>
       <td>
         {% if user == current_user %}
-        <button type="submut"><a href="{{ url_for('edit_profile') }}">Edit profile</a></button>
+        <div class="button"><a href="{{ url_for('edit_profile') }}">Edit profile</a></div>
         {% endif %}
       </td>
     </tr>
   </table>
-  <h2>Your posts...</h2>
+  <h4>your posts...</h4>
   <hr>
   {% for post in posts %}
       {% include '_post.html' %}

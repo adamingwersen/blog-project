@@ -10,7 +10,7 @@
           <div>{{ form.title(size = 50, cols = 48, rows = 1.5, placeholder = "your title here...", class="textarea", id = "titlefield") }}</div>
           <label for="textarea">body</label>
           <div>{{ form.body(size = 512, cols = 48, rows = 15, placeholder = "your blog post here...", class="textarea", id = "bodyfield") }}</div>
-          <div>{{ form.submit(class="button", type = "button") }}</div>
+          <div>{{ form.submit(class="button", id = "button") }}</div>
       </fieldset>
     </form>
     {% for post in posts %}
