@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms.widgets import TextArea
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
-from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length
+from wtforms.validators import DataRequired, ValidationError, Email, EqualTo, Length, Regexp, NoneOf
 from app.models import User
 
 class LoginForm(FlaskForm):
@@ -11,10 +11,11 @@ class LoginForm(FlaskForm):
     submit      = SubmitField('Sign In')
 
 class RegistrationForm(FlaskForm):
-    username    = StringField('Username', validators = [DataRequired()])
-    email       = StringField('Email', validators = [DataRequired(), Email()])
+    username    = StringField('Username', validators = [DataRequired(), NoneOf('\s', message = 'Username must not contain spaces.')])
+    full_name   = StringField('Full Name', validators = [DataRequired(), Regexp('^\w+$', message = 'Your full name must contain special characters.')])
+    email       = StringField('Email', validators = [DataRequired(), Email(message = 'Please provide an email adress.')])
     password    = PasswordField('Password', validators = [DataRequired()])
-    password2   = PasswordField('Repeat', validators = [DataRequired(), EqualTo('password')])
+    password2   = PasswordField('Repeat Password', validators = [DataRequired(), EqualTo('password', message = 'Passwords do not match.')])
     submit      = SubmitField('Register')
 
     def validate_username(self, username):
@@ -29,6 +30,7 @@ class RegistrationForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     username    = StringField('Username', validators = [DataRequired()])
+    full_name   = StringField('Full Name', validators = [DataRequired(), Regexp('^\w+$', message = 'Your full name must contain special characters.')])
     about_me    = TextAreaField('About me', validators = [Length(min = 0, max = 50)], widget = TextArea())
     submit      = SubmitField('Submit')
 
