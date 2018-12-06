@@ -9,3 +9,4 @@
 * Add landing page for newcomers
 * Add tags
 * Add search
+* Add n_posts to user page
