@@ -11,11 +11,11 @@ class LoginForm(FlaskForm):
     submit      = SubmitField('Sign In')
 
 class RegistrationForm(FlaskForm):
-    username    = StringField('Username', validators = [DataRequired(), NoneOf('\s', message = 'Username must not contain spaces.')])
-    full_name   = StringField('Full Name', validators = [DataRequired(), Regexp('^\w+$', message = 'Your full name must contain special characters.')])
-    email       = StringField('Email', validators = [DataRequired(), Email(message = 'Please provide an email adress.')])
+    username    = StringField('Username', validators = [DataRequired(), Regexp('^[a-zA-Z0-9_.]*$', message = 'Username must not contain spaces')])
+    full_name   = StringField('Full Name', validators = [DataRequired(), Regexp('^[a-zA-Z ]*$', message = 'Your full name must not contain special characters')])
+    email       = StringField('Email', validators = [DataRequired(), Email(message = 'Please provide a valid email adress')])
     password    = PasswordField('Password', validators = [DataRequired()])
-    password2   = PasswordField('Repeat Password', validators = [DataRequired(), EqualTo('password', message = 'Passwords do not match.')])
+    password2   = PasswordField('Repeat Password', validators = [DataRequired(), EqualTo('password', message = 'Passwords do not match')])
     submit      = SubmitField('Register')
 
     def validate_username(self, username):
@@ -30,7 +30,7 @@ class RegistrationForm(FlaskForm):
 
 class EditProfileForm(FlaskForm):
     username    = StringField('Username', validators = [DataRequired()])
-    full_name   = StringField('Full Name', validators = [DataRequired(), Regexp('^\w+$', message = 'Your full name must contain special characters.')])
+    full_name   = StringField('Full Name', validators = [DataRequired(), Regexp('^\w+$', message = 'Your full name must contain special characters')])
     about_me    = TextAreaField('About me', validators = [Length(min = 0, max = 50)], widget = TextArea())
     submit      = SubmitField('Submit')
 
@@ -46,5 +46,5 @@ class EditProfileForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title   = TextAreaField('Title', validators = [DataRequired(), Length(min = 0, max = 40)], widget = TextArea())
-    body    = TextAreaField('Body', validators = [DataRequired(), Length(min = 0, max = 512)], widget = TextArea())
+    body    = TextAreaField('Body', validators = [DataRequired(), Length(min = 0, max = 8000)], widget = TextArea())
     submit  = SubmitField('Post')

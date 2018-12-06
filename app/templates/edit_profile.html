@@ -5,14 +5,14 @@
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <label for="textarea">username</label>
-        <div>{{ form.username(size=32, class="textarea", id="bodyfield") }}
+        <div>{{ form.username(size=64, class="textarea", id="bodyfield") }}</div>
         <p>
           {% for error in form.username.errors %}
           <span style="color: red;">[{{ error }}]</span>
           {% endfor %}
         </p>
         <label for="textarea">description</label>
-        <div>{{ form.about_me(size=50, cols = 48, rows = 4, class="textarea", id="bodyfield") }}
+        <div>{{ form.about_me(size=50, cols = 48, rows = 4, class="textarea", id="bodyfield") }}</div>
         <p>
             {% for error in form.about_me.errors %}
             <span style="color: red;">[{{ error }}]</span>
