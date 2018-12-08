@@ -1,22 +1,26 @@
-<table>
-    <tr valign="top">
+{% macro render_post(src) %}
+  <table>
+    <table>
+      <tr>
         <td>
-          <img src="{{ post.author.avatar(48) }}"><br>
+          <img src="{{ src.author.avatar(48) }}"><br>
         </td>
         <td>
-          <a href="{{ url_for('user', username=post.author.username) }}">{{ post.author.username }}</a>
+          <a href="{{ url_for('user', username=src.author.username) }}">{{ src.author.username }}</a>
         </td>
         <td>
-          posted on: {{ post.timestamp }}
+          posted on: {{ src.timestamp }}
         </td>
-    </tr>
-</table>
-<table>
-  <tr>
-      <td><b>{{ post.title }}<b></td>
-  </tr>
-  <tr>
-      <td>{{ post.body }}</td>
-  </tr>
-</table>
-<br>
+      </tr>
+    </table>
+    <table>
+      <tr>
+          <td><b>{{ src.title }}<b></td>
+      </tr>
+      <tr>
+          <td>{{ src.body }}</td>
+      </tr>
+    </table>
+  <table>
+  <br>
+{% endmacro %}

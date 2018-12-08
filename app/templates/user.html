@@ -1,13 +1,15 @@
 {% extends "base.html" %}
+{% from "_post.html" import render_post %}
 
 {% block content %}
   <table>
     <tr>
-      <td><img src="{{ user.avatar(228) }}"></td>
+      <td valign="center"><img src="{{ user.avatar(228) }}"></td>
       <td>
         <h4>{{ user.username }}</h4>
-        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-        {% if user.last_seen %}<p>Last active: {{ user.last_seen }}</p>{% endif %}
+        {% if user.full_name %}<p><b>Name:</b> {{ user.full_name }}</p>{% endif %}
+        {% if user.last_seen %}<p><b>Last active:</b> {{ user.last_seen }}</p>{% endif %}
+        {% if user.about_me %}<p><b>About {{ user.username }}:</b> <br>{{ user.about_me }}</p>{% endif %}
       </td>
       <td>
         {% if user == current_user %}
@@ -16,10 +18,10 @@
       </td>
     </tr>
   </table>
-  <h4>your posts...</h4>
+  <h4> Posts by <a href="{{ url_for('user', username=user.username) }}">{{ user.username }}</a>:</h4>
   <hr>
   {% for post in posts %}
-      {% include '_post.html' %}
+      {{ render_post(post) }}
   {% endfor %}
   {% if prev_url %}
   <a href="{{ prev_url }}">Newer posts</a>

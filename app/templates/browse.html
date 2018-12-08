@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% from "_post.html" import render_post %}
+
+{% block content %}
+    <h4>Check out our {{ posts.total_posts }} posts</h4>
+    {% for post in posts %}
+        {{ render_post(post) }}
+    {% endfor %}
+    {% if prev_url %}
+    <a href="{{ prev_url }}">Newer posts</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Older posts</a>
+    {% endif %}
+{% endblock %}
