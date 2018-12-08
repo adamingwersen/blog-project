@@ -1,10 +1,11 @@
 from app import app, db
 from app.models import User, Post, PostRegister
 from datetime import datetime
-from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm
+from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm, PostVoteForm
 from flask_login import current_user, login_user, logout_user, login_required
 from flask import render_template, flash, redirect, url_for, request
 from werkzeug.urls import url_parse
+import flask_whooshalchemy
 
 """
  - SET ACTIVITY -
@@ -53,6 +54,7 @@ def index():
 @app.route('/browse', methods = ['GET', 'POST'])
 @login_required
 def browse():
+    form        = PostVoteForm()
     page        = request.args.get('page', 1, type = int)
     posts       = Post.query.order_by(Post.timestamp.desc())
     n_posts     = posts.count()
@@ -60,6 +62,20 @@ def browse():
     next_url    = url_for('browse', page = posts.next_num) if posts.has_next else None
     prev_url    = url_for('browse', page = posts.prev_num) if posts.has_prev else None
     return(render_template('browse.html',  title = "Browse", posts = posts.items, n_posts = n_posts, next_url = next_url, prev_url = prev_url))
+
+@app.route('/search', methods=['POST'])
+@login_required
+def search():
+  form = SearchForm()
+  if not form.validate_on_submit():
+    return redirect(url_for('index'))
+  return redirect((url_for('search_results', query=form.search.data)))
+
+@app.route('/search_results/<query>')
+@login_required
+def search_results(query):
+  results = User.query.whoosh_search(query).all()
+  return render_template('search_results.html', query=query, results=results)
 
 
 """
@@ -136,5 +152,4 @@ def register():
         db.session.commit()
         flash('Thanks for registering with us.', category='message')
         return(redirect(url_for('login')))
-
     return(render_template('register.html', title = 'Register', form = form))

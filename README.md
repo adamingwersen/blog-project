@@ -7,5 +7,4 @@
 * Add a board for interacting / socializing (upvote/downvote)
 * Add tags
 * Add search
-* Format timestamps
 * Migrate to MySQL

@@ -10,7 +10,11 @@
           <a  id="inline-hyper" href="{{ url_for('user', username=src.author.username) }}">{{ src.author.username }}</a>
         </td>
         <td>
-          posted on: {{ src.timestamp }}
+          posted on: {{ src.timestamp | castdate }}
+        </td>
+        <td>
+          <button class='upvote' type='submit' value = 1></button>
+          <button class='downvote' type='submit' value = 1></button>
         </td>
       </tr>
     </table>

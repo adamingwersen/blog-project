@@ -58,3 +58,6 @@ class PostForm(FlaskForm):
 class PostVoteForm(FlaskForm):
     upvote      = BooleanField('Upvote')
     downvote    = BooleanField('Downvote')
+
+class SearchForm(FlaskForm):
+    a = BooleanField('a')

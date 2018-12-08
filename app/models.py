@@ -2,6 +2,7 @@ from app import db
 from app import login
 from hashlib import md5
 from datetime import datetime
+import flask_whooshalchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -53,11 +54,12 @@ The [table] schema for [Post]
 Holds static information about posts, linked to user by user_id
 """
 class Post(db.Model):
-    id           = db.Column(db.Integer, primary_key = True)
-    title        = db.Column(db.String(40))
-    body         = db.Column(db.String(100))
-    timestamp    = db.Column(db.DateTime, index = True, default = datetime.utcnow)
-    user_id      = db.Column(db.Integer, db.ForeignKey('user.id'))
+    __searchable__  = ['title', 'body']
+    id              = db.Column(db.Integer, primary_key = True)
+    title           = db.Column(db.String(40))
+    body            = db.Column(db.String(100))
+    timestamp       = db.Column(db.DateTime, index = True, default = datetime.utcnow)
+    user_id         = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
         return('<Title {}>'.format(self.title))
