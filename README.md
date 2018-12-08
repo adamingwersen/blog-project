@@ -5,10 +5,7 @@
 
 ### Todo
 * Add a board for interacting / socializing (upvote/downvote)
-* Add proper homepage, that lists activity related to user
-* Add landing page for newcomers
 * Add tags
 * Add search
-* Add n_posts to user page
 * Format timestamps
 * Migrate to MySQL

@@ -12,3 +12,10 @@ login = LoginManager(app)
 login.login_view = 'login'
 
 from app import routes, models, errors
+
+"""
+ - DATETIME FORMATTER
+"""
+@app.template_filter('castdate')
+def cast_date(dt):
+    return(dt.strftime('%Y-%m-%d %H:%M'))

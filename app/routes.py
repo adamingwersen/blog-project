@@ -15,7 +15,6 @@ def before_request():
     if current_user.is_authenticated:
         current_user.last_seen = datetime.utcnow()
         db.session.commit()
-
 """
  - LOGOUT -
 """
@@ -52,6 +51,7 @@ def index():
  - BOARD -
 """
 @app.route('/browse', methods = ['GET', 'POST'])
+@login_required
 def browse():
     page        = request.args.get('page', 1, type = int)
     posts       = Post.query.order_by(Post.timestamp.desc())
