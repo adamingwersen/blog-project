@@ -89,10 +89,12 @@ def login():
 def user(username):
     page        = request.args.get('page', 1, type = int)
     user        = User.query.filter_by(username = username).first_or_404()
-    posts       = Post.query.filter_by(user_id = user.id).order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+    posts       = Post.query.filter_by(user_id = user.id).order_by(Post.timestamp.desc())
+    n_posts     = posts.count()
+    posts       = posts.paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url    = url_for('user', username = username, page = posts.next_num) if posts.has_next else None
     prev_url    = url_for('user', username = username, page = posts.prev_num) if posts.has_prev else None
-    return(render_template('user.html', user = user, posts = posts.items, next_url = next_url, prev_url = prev_url))
+    return(render_template('user.html', user = user, posts = posts.items, n_posts = n_posts, next_url = next_url, prev_url = prev_url))
 
 
 """
