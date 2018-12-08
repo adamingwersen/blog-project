@@ -60,4 +60,15 @@ class Post(db.Model):
     user_id      = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return('<Body {}>'.format(self.body))
+        return('<Title {}>'.format(self.title))
+
+"""
+The [table] schema for [PostRegister]
+This table serves as a register for activity on posts by users
+"""
+class PostRegister(db.Model):
+    id          = db.Column(db.Integer, primary_key = True)
+    post_id     = db.Column(db.Integer, db.ForeignKey('post.id'))
+    user_id     = db.Column(db.Integer, db.ForeignKey('user.id'))
+    upvote      = db.Column(db.Boolean)
+    downvote    = db.Column(db.Boolean)
