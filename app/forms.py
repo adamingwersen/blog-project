@@ -54,3 +54,7 @@ class PostForm(FlaskForm):
     title   = TextAreaField('Title', validators = [DataRequired(), Length(min = 0, max = 40)], widget = TextArea())
     body    = TextAreaField('Body', validators = [DataRequired(), Length(min = 0, max = 100, message = "Blog post too long")], widget = TextArea())
     submit  = SubmitField('Post')
+
+class PostVoteForm(FlaskForm):
+    upvote      = BooleanField('Upvote')
+    downvote    = BooleanField('Downvote')

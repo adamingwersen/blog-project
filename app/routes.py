@@ -1,5 +1,5 @@
 from app import app, db
-from app.models import User, Post
+from app.models import User, Post, PostRegister
 from datetime import datetime
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, PostForm
 from flask_login import current_user, login_user, logout_user, login_required
@@ -53,11 +53,13 @@ def index():
 """
 @app.route('/browse', methods = ['GET', 'POST'])
 def browse():
-    page    = request.args.get('page', 1, type = int)
-    posts   = Post.query.order_by(Post.timestamp.desc()).paginate(page, app.config['POSTS_PER_PAGE'], False)
+    page        = request.args.get('page', 1, type = int)
+    posts       = Post.query.order_by(Post.timestamp.desc())
+    n_posts     = posts.count()
+    posts       = posts.paginate(page, app.config['POSTS_PER_PAGE'], False)
     next_url    = url_for('browse', page = posts.next_num) if posts.has_next else None
     prev_url    = url_for('browse', page = posts.prev_num) if posts.has_prev else None
-    return(render_template('browse.html',  title = "Browse", posts = posts.items, next_url = next_url, prev_url = prev_url))
+    return(render_template('browse.html',  title = "Browse", posts = posts.items, n_posts = n_posts, next_url = next_url, prev_url = prev_url))
 
 
 """

@@ -2,7 +2,7 @@
 {% from "_post.html" import render_post %}
 
 {% block content %}
-    <h4>Check out our {{ posts.total_posts }} posts</h4>
+    <h4>Check out our <b>{{ n_posts }}</b> posts</h4>
     {% for post in posts %}
         {{ render_post(post) }}
     {% endfor %}

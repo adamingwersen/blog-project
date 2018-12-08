@@ -108,19 +108,16 @@ li a:hover:not(.active) {
   font-size: 1.15rem;
 }
 
-#perror {
-  margin-top: .5em;
-}
-
 table {
   text-align: justify;
   width: 100%;
   border-collapse: collapse;
+  border: 1px solid #4a4a4a;
 }
 
 td, th {
-  padding: 0.5em;
-  border-bottom: 1px solid #4a4a4a;
+  line-height: 1.4em;
+  padding: 0.7em;
 }
 
 /* Buttons, forms and input */
