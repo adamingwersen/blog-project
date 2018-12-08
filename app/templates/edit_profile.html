@@ -1,23 +1,14 @@
 {% extends "base.html" %}
+{% from "_formhelpers.html" import render_field %}
 
 {% block content %}
     <h4>edit profile</h4>
     <form action="" method="post">
         {{ form.hidden_tag() }}
-        <label for="textarea">username</label>
-        <div>{{ form.username(size=64, class="textarea", id="bodyfield") }}</div>
-        <p>
-          {% for error in form.username.errors %}
-          <span style="color: red;">[{{ error }}]</span>
-          {% endfor %}
-        </p>
-        <label for="textarea">description</label>
-        <div>{{ form.about_me(size=50, cols = 48, rows = 4, class="textarea", id="bodyfield") }}</div>
-        <p>
-            {% for error in form.about_me.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
+        <div>{{ render_field(form.full_name, class="textarea", id="bodyfield") }}</div>
+        <div>{{ render_field(form.username, class="textarea", id="bodyfield") }}</div>
+        <div>{{ render_field(form.email, class="textarea", id="bodyfield") }}</div>
+        <div>{{ render_field(form.about_me, rows = 4, class="textarea", id="bodyfield") }}</div>
         <div>{{ form.submit(class = "button", id = "button") }}</div>
     </form>
 {% endblock %}

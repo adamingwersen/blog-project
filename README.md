@@ -10,3 +10,5 @@
 * Add tags
 * Add search
 * Add n_posts to user page
+* Format timestamps
+* Migrate to MySQL

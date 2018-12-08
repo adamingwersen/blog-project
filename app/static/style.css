@@ -67,6 +67,10 @@ a {
   color: #ffffff;
 }
 
+#inline-hyper {
+  color: #9db9c7;
+}
+
 a:hover {
   color: #c9c9c9;
   border-bottom: 2px solid #c9c9c9;

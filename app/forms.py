@@ -29,8 +29,9 @@ class RegistrationForm(FlaskForm):
             raise(ValidationError('Email already taken. Choose another'))
 
 class EditProfileForm(FlaskForm):
-    username    = StringField('Username', validators = [DataRequired()])
-    full_name   = StringField('Full Name', validators = [DataRequired(), Regexp('^\w+$', message = 'Your full name must contain special characters')])
+    username    = StringField('Username', validators = [DataRequired(), Regexp('^[a-zA-Z0-9_.]*$', message = 'Username must not contain spaces')])
+    full_name   = StringField('Full Name', validators = [DataRequired(), Regexp('^[a-zA-Z ]*$', message = 'Your full name must not contain special characters')])
+    email       = StringField('Email', validators = [DataRequired(), Email(message = 'Please provide a valid email adress')])
     about_me    = TextAreaField('About me', validators = [Length(min = 0, max = 50)], widget = TextArea())
     submit      = SubmitField('Submit')
 
@@ -43,6 +44,11 @@ class EditProfileForm(FlaskForm):
             user = User.query.filter_by(username = self.username.data).first()
             if user is not None:
                 raise(ValidationError('Username already taken. Choose another'))
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email = email.data).first()
+        if user is not None:
+            raise(ValidationError('Email already taken. Choose another'))
 
 class PostForm(FlaskForm):
     title   = TextAreaField('Title', validators = [DataRequired(), Length(min = 0, max = 40)], widget = TextArea())

@@ -2,7 +2,7 @@
 
 {% block content %}
     <h4>welcome to <b><sup>ab</sup>log</b></h4>
-    <p><a href="{{ url_for('login')}}">log in</a> to create your own <b><sup>ab</sup>log</b> post</p>
+    <p><a id="inline-hyper" href="{{ url_for('login')}}">log in</a> to create your own <b><sup>ab</sup>log</b> post</p>
     <hr>
     {% for post in posts %}
         {% include '_post.html' %}
