@@ -11,20 +11,15 @@
     <body>
       <ul>
         <li><b><sup>ab</sup>log</b>::</li>
-        <li><a href="{{ url_for('index') }}">home</a></li>
-        <li><a href="{{ url_for('browse') }}">browse</a></li>
         {% if current_user.is_anonymous %}
-          <li>
-            <a href="{{ url_for('login') }}">login</a>
-          </li>
+            <li><a href="{{ url_for('index') }}">home</a></li>
+            <li><a href="{{ url_for('login') }}">login</a></li>
         {% else %}
-          <li>
-            <a href="{{ url_for('user', username = current_user.username) }}">profile</a>
-          </li>
-          <li>
-          <a href="{{ url_for('logout') }}">logout</a>
+          <li><a href="{{ url_for('index') }}">new post</a></li>
+          <li><a href="{{ url_for('browse') }}">browse</a></li>
+          <li><a href="{{ url_for('user', username = current_user.username) }}">profile</a></li>
+          <li><a href="{{ url_for('logout') }}">logout</a></li>
           {% endif %}
-        </li>
       </ul>
       {% with messages = get_flashed_messages() %}
       {% if messages %}

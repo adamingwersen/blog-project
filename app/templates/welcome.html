@@ -2,15 +2,9 @@
 
 {% block content %}
     <h4>welcome to <b><sup>ab</sup>log</b></h4>
-    <p><a id="inline-hyper" href="{{ url_for('login')}}">log in</a> to create your own <b><sup>ab</sup>log</b> post</p>
+    <p><a id="inline-hyper" href="{{ url_for('login')}}">log in</a> to browse or create your own <b><sup>ab</sup>log</b> post</p>
     <hr>
     {% for post in posts %}
         {% include '_post.html' %}
     {% endfor %}
-    {% if prev_url %}
-    <a href="{{ prev_url }}">Newer posts</a>
-    {% endif %}
-    {% if next_url %}
-    <a href="{{ next_url }}">Older posts</a>
-    {% endif %}
 {% endblock %}
