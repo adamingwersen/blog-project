@@ -6,8 +6,9 @@
     <tr>
       <td valign="center"><img src="{{ user.avatar(228) }}"></td>
       <td>
-        <h4>{{ user.username }}</h4>
+        <h4  id="inline-hyper">{{ user.username }}</h4>
         {% if user.full_name %}<p><b>Name:</b> {{ user.full_name }}</p>{% endif %}
+        <p><b>Number of posts:</b> {{ n_posts }}</p>
         {% if user.last_seen %}<p><b>Last active:</b> {{ user.last_seen }}</p>{% endif %}
         {% if user.about_me %}<p><b>About {{ user.username }}:</b> <br>{{ user.about_me }}</p>{% endif %}
       </td>
