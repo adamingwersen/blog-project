@@ -7,7 +7,7 @@
           <img src="{{ src.author.avatar(48) }}"><br>
         </td>
         <td>
-          <a  id="inline-hyper" href="{{ url_for('user', username=src.author.username) }}">{{ src.author.username }}</a>
+          <a id="inline-hyper" href="{{ url_for('user', username=src.author.username) }}">{{ src.author.username }}</a>
         </td>
         <td>
           posted on: {{ src.timestamp | castdate }}

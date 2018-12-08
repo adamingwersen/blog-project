@@ -56,8 +56,8 @@ Holds static information about posts, linked to user by user_id
 class Post(db.Model):
     __searchable__  = ['title', 'body']
     id              = db.Column(db.Integer, primary_key = True)
-    title           = db.Column(db.String(40))
-    body            = db.Column(db.String(100))
+    title           = db.Column(db.Text)
+    body            = db.Column(db.Text)
     timestamp       = db.Column(db.DateTime, index = True, default = datetime.utcnow)
     user_id         = db.Column(db.Integer, db.ForeignKey('user.id'))
 

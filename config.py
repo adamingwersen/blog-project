@@ -3,7 +3,8 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'psswrd'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
-        'sqlite:///' + os.path.join(basedir, 'app.db')
+    MYSQL_URI = """mysql+mysqldb://flask_mgmt:flask@localhost[:3306]/flask_app"""
+    SQLITE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db'
+    SQLALCHEMY_DATABASE_URI = MYSQL_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     POSTS_PER_PAGE = 5
