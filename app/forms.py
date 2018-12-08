@@ -47,7 +47,7 @@ class EditProfileForm(FlaskForm):
 
     def validate_email(self, email):
         user = User.query.filter_by(email = email.data).first()
-        if user is not None:
+        if user is None:
             raise(ValidationError('Email already taken. Choose another'))
 
 class PostForm(FlaskForm):
