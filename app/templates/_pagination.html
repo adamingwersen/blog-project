@@ -1,0 +1,8 @@
+{% macro render_pageset(prev, next) %}
+  {% if prev %}
+  <p style="float:right;" id = 'inline-hyper'><a href="{{ prev }}">Newer posts</a></p>
+  {% endif %}
+  {% if next %}
+  <p style="float:left;" id = 'inline-hyper'><a href="{{ next }}">Older posts</a></p>
+  {% endif %}
+{% endmacro %}
