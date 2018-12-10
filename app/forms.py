@@ -60,4 +60,4 @@ class PostVoteForm(FlaskForm):
     downvote    = BooleanField('Downvote')
 
 class SearchForm(FlaskForm):
-    a = BooleanField('a')
+    pass

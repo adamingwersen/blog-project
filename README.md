@@ -4,7 +4,6 @@
 ### Description
 
 ### Todo
-* Add a board for interacting / socializing (upvote/downvote)
+* Interacting (upvote/downvote)
 * Add tags
 * Add search
-* Migrate to MySQL
